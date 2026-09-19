@@ -31,14 +31,19 @@ export interface CurrentUser {
   teamScope: number[] | null;
 }
 
-/** The signed-in email, or null. Validated against the Auth server (getUser), not just the cookie. */
+/**
+ * The signed-in email, or null. The token's signature is verified with
+ * getClaims() against the project's public signing key, so the cookie is never
+ * trusted as-is, and no network call to the Auth server is needed per request.
+ */
 const getSessionEmail = cache(async (): Promise<string | null> => {
   if (authBypassEnabled()) return DEMO_USER_EMAIL;
   try {
     const supabase = await createAuthClient();
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user?.email) return null;
-    return data.user.email.toLowerCase();
+    const { data, error } = await supabase.auth.getClaims();
+    const email = data?.claims?.email;
+    if (error || typeof email !== "string" || email === "") return null;
+    return email.toLowerCase();
   } catch {
     return null;
   }
