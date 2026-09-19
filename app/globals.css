@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Fieldnote design tokens. A calm, dense operations console: cool greys, near
+ * black ink, one teal accent. Status colours are reserved for status.
+ */
+@theme {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-canvas: #eceff3;
+  --color-surface: #ffffff;
+  --color-sunken: #f5f7f9;
+  --color-ink: #101b25;
+  --color-ink-2: #3f4d5a;
+  --color-ink-3: #5d6b79;
+  --color-line: #d7dde3;
+  --color-line-strong: #b4bec8;
+  --color-chrome: #0f1a24;
+  --color-chrome-2: #1b2935;
+  --color-chrome-ink: #c6d0da;
+
+  --color-accent: #0b6b65;
+  --color-accent-strong: #084f4b;
+  --color-accent-soft: #dff0ee;
+
+  --color-ok: #1b6e45;
+  --color-ok-soft: #e1f2e8;
+  --color-warn: #7d5200;
+  --color-warn-soft: #fbedcc;
+  --color-bad: #ad2216;
+  --color-bad-soft: #fce6e3;
+  --color-info: #1d4f91;
+  --color-info-soft: #e3ecf8;
+
+  /* Heatmap: diverging, under-claimed (blue) to over-claimed (orange). */
+  --color-hm-under-3: #173e78;
+  --color-hm-under-2: #2f66b3;
+  --color-hm-under-1: #a9c3e6;
+  --color-hm-zero: #dce3e9;
+  --color-hm-over-1: #f2c48a;
+  --color-hm-over-2: #d9591f;
+  --color-hm-over-3: #96300d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 14px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum" 1;
+}
+
+/* One visible, consistent keyboard focus style everywhere. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+/* Dense data table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+.table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-line-strong);
+  background: var(--color-sunken);
+  white-space: nowrap;
+}
+.table td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: middle;
+}
+.table tbody tr:hover {
+  background: var(--color-sunken);
+}
+.table .r {
+  text-align: right;
+}
+
+/* Hatch for "missing report" heatmap cells */
+.hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-ink-2) 0,
+    var(--color-ink-2) 1.5px,
+    #ffffff 1.5px,
+    #ffffff 4.5px
+  );
+}
+
+/* Running-batch stripe */
+@keyframes stripe-move {
+  to {
+    background-position: 28px 0;
+  }
+}
+.stripes {
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgb(11 107 101 / 0.28) 0,
+    rgb(11 107 101 / 0.28) 7px,
+    rgb(11 107 101 / 0.1) 7px,
+    rgb(11 107 101 / 0.1) 14px
+  );
+  background-size: 28px 100%;
+  animation: stripe-move 0.9s linear infinite;
+}
+
+@keyframes tile-in {
+  from {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+}
+.tile-done {
+  animation: tile-in 0.25s ease-out;
+}
+
+@keyframes pulse-soft {
+  50% {
+    opacity: 0.45;
+  }
+}
+.pulse-soft {
+  animation: pulse-soft 1.1s ease-in-out infinite;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e7ec 25%, #eef1f4 50%, #e2e7ec 75%);
+  background-size: 200% 100%;
+  animation: stripe-move 1.2s linear infinite;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stripes,
+  .tile-done,
+  .pulse-soft,
+  .skeleton {
+    animation: none;
+  }
 }

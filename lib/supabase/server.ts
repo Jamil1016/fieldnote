@@ -1,6 +1,7 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { NO_REALTIME } from "./no-realtime";
 
 /**
  * Cookie-bound Supabase client. Used for AUTH ONLY (getUser, sign-in,
@@ -10,6 +11,7 @@ import { cookies } from "next/headers";
 export async function createAuthClient() {
   const cookieStore = await cookies();
   return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+    realtime: NO_REALTIME,
     cookies: {
       getAll() {
         return cookieStore.getAll();

@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
+import { NO_REALTIME } from "./no-realtime";
 
 /**
  * Service-role client. BYPASSES RLS. Server-only.
@@ -19,6 +20,7 @@ export function createServiceClient() {
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     db: { schema: "fn_app" },
+    realtime: NO_REALTIME,
   });
 }
 
