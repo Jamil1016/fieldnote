@@ -24,7 +24,9 @@ export async function enterDemo(): Promise<void> {
         encodeURIComponent(`Demo sign-in failed: ${error.message}. Create the ${DEMO_USER_EMAIL} user in Supabase Auth (see README).`),
     );
   }
-  redirect("/");
+  // Straight to the demo user's home: going through "/" costs a second full
+  // round of session checks before the visitor sees anything.
+  redirect("/approvals");
 }
 
 export async function signOut(): Promise<void> {
