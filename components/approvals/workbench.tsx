@@ -63,11 +63,22 @@ export function ApprovalsWorkbench({
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
-  const teams = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const i of items) map.set(i.teamId, i.teamName);
-    return [...map.entries()].sort((a, b) => a[1].localeCompare(b[1]));
-  }, [items]);
+  // Remember every team seen in this session: when a batch clears a team's
+  // queue the team drops out of `items`, and a filter pointing at a missing
+  // <option> would silently display "All teams" while still filtering.
+  const [knownTeams, setKnownTeams] = useState<ReadonlyMap<number, string>>(
+    () => new Map(items.map((i) => [i.teamId, i.teamName])),
+  );
+  if (items.some((i) => !knownTeams.has(i.teamId))) {
+    // Adjusting state during render (not in an effect) when new props arrive.
+    const next = new Map(knownTeams);
+    for (const i of items) next.set(i.teamId, i.teamName);
+    setKnownTeams(next);
+  }
+  const teams = useMemo(
+    () => [...knownTeams.entries()].sort((a, b) => a[1].localeCompare(b[1])),
+    [knownTeams],
+  );
 
   const counts = useMemo(() => {
     const c = { all: items.length, on_time: 0, due_soon: 0, overdue: 0 };

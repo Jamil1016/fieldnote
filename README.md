@@ -6,6 +6,12 @@ A clean-room portfolio build. It models the kind of workforce-compliance platfor
 
 It runs permanently in demo mode on seeded data for a fictional company, Example Co Field Services. Nothing is ever sent, the integrations are simulated, and the data resets nightly.
 
+![A bulk approval interrupted by a simulated API outage: 12 approved, 3 failed, 24 pending, with Resume and Retry failed](docs/screenshots/02-batch-interrupted.jpg)
+
+| After Resume and Retry failed | Hours variance heatmap | Reminders, run twice |
+|---|---|---|
+| ![Batch complete, 39 of 39, each written exactly once](docs/screenshots/03-batch-resumed-complete.jpg) | ![Member by working day heatmap](docs/screenshots/04-hours-variance-heatmap.jpg) | ![Second run sends zero](docs/screenshots/05-reminders-exactly-once.jpg) |
+
 Stack: Next.js 16 (App Router, TypeScript strict), React 19, Tailwind CSS 4, Supabase (Postgres + Auth via `@supabase/ssr`), zod, vitest.
 
 ## Features tour
@@ -149,7 +155,7 @@ That stack has no Auth service, which is what `DEMO_AUTH_BYPASS_FOR_LOCAL_TESTS`
 - Light theme only. Laid out for desktop and tablet; the heatmap scrolls sideways on narrow screens.
 - `supabase-js` constructs a Realtime client eagerly, which throws on Node 20 because there is no global WebSocket. The app never uses Realtime, so it passes an inert transport (`lib/supabase/no-realtime.ts`) and runs on Node 20 and later.
 
-Screenshots: see `docs/screenshots/README.md`.
+More screenshots: [`docs/screenshots/`](docs/screenshots/). All are from the running demo, so everything shown is invented.
 
 ## License
 
