@@ -10,9 +10,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:db": "vitest run --config vitest.db.config.ts",
+    "test:db": "vitest run --config vitest.db.config.mts",
     "db:apply": "node scripts/local/apply.mjs",
-    "db:race": "node scripts/local/claim-race.mjs"
+    "db:race": "node scripts/local/claim-race.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -25,6 +26,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.23.1",
@@ -37,5 +39,9 @@
     "typescript": "^5",
     "vitest": "^4.1.11"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.9"
+  },
+  "description": "Fieldnote: a workforce daily-report compliance demo on invented data."
 }
