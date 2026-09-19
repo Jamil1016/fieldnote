@@ -6,6 +6,8 @@ A clean-room portfolio build. It models the kind of workforce-compliance platfor
 
 It runs permanently in demo mode on seeded data for a fictional company, Example Co Field Services. Nothing is ever sent, the integrations are simulated, and the data resets nightly.
 
+**Live demo: https://fieldnote-five.vercel.app** (click **Enter demo**; no account needed). Invented data, nothing is sent, resets every night.
+
 ![A bulk approval interrupted by a simulated API outage: 12 approved, 3 failed, 24 pending, with Resume and Retry failed](docs/screenshots/02-batch-interrupted.jpg)
 
 | After Resume and Retry failed | Hours variance heatmap | Reminders, run twice |
